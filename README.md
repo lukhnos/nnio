@@ -1,5 +1,6 @@
 # NNIO: A porting strategy for code that depend on Java NIO.2 API
 
+[![Build Status](https://travis-ci.org/lukhnos/nnio.svg?branch=master)](https://travis-ci.org/lukhnos/nnio)
 
 NNIO ("Not NIO") is an experimental porting strategy for code that depends on
 Java NIO.2 API (for example, classes in the `java.nio.file` package). It
