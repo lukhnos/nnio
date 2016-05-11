@@ -1,4 +1,8 @@
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+ext.isReleaseVersion = !version.endsWith('-SNAPSHOT')
 
 repositories {
   mavenCentral()
@@ -29,4 +33,115 @@ task filter(type: Copy) {
 
 compileTestJava {
   source filter.outputs.files, sourceSets.test.java
+}
+
+// http://central.sonatype.org/pages/gradle.html
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+  // https://docs.gradle.org/2.9/userguide/signing_plugin.html
+  required { isReleaseVersion && gradle.taskGraph.hasTask(uploadArchives) }
+  sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      // Use safety fallback, so these two vars can be created...
+      def username = project.hasProperty('ossrhUsername') ? project.ossrhUsername : ''
+      def password = project.hasProperty('ossrhPassword') ? project.ossrhPassword : ''
+
+      repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+        authentication(userName: username, password: password)
+      }
+
+      snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
+        authentication(userName: username, password: password)
+      }
+
+      pom.project {
+        name 'nnio'
+        packaging 'jar'
+        description 'A substitute library for NIO.2'
+        url 'https://github.com/lukhnos/nnio'
+
+        scm {
+          connection 'scm:git:git://github.com/lukhnos/nnio.git'
+          developerConnection 'scm:git:git@github.com:lukhnos/nnio.git'
+          url 'https://github.com/lukhnos/nnio'
+        }
+
+        licenses {
+          license {
+            name 'The Apache License, Version 2.0'
+            url 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id 'lukhnos'
+            name 'Lukhnos Liu'
+            email 'lukhnos@lukhnos.org'
+          }
+        }
+      }
+    }
+  }
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+  if (taskGraph.allTasks.any { it instanceof Upload }) {
+    if (!isReleaseVersion) {
+      throw new GradleException("SNAPSHOT version not allowed: $version")
+    }
+
+    if (!project.hasProperty('ossrhUsername') ||
+        !project.hasProperty('ossrhPassword')) {
+      throw new GradleException(
+        'missing properties: ossrhUsername and ossrhPassword')
+    }
+  }
+}
+
+// From https://docs.gradle.org/2.9/userguide/signing_plugin.html
+gradle.taskGraph.whenReady { taskGraph ->
+  if (taskGraph.allTasks.any { it instanceof Sign }) {
+    if (!isReleaseVersion || !gradle.taskGraph.hasTask(uploadArchives)) {
+      return
+    }
+    Console console = System.console()
+    console.printf '\n\nSpecify the key for signing the artifacts\n\n'
+
+    if (!project.hasProperty('signing.keyId')) {
+      def id = console.readLine('GPG key id: ')
+      allprojects { ext.'signing.keyId' = id }
+    }
+
+    if (!project.hasProperty('signing.secretKeyRingFile')) {
+      def file = console.readLine('GPG secret key ring file (absolute path): ')
+      allprojects { ext.'signing.secretKeyRingFile' = file }
+    }
+
+    if (!project.hasProperty('signing.password')) {
+      def password = console.readPassword('GPG private key password: ')
+      allprojects { ext.'signing.password' = password }
+    }
+
+    console.printf '\nThanks.\n\n'
+  }
 }
