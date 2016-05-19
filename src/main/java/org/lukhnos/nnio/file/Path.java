@@ -17,12 +17,19 @@
 package org.lukhnos.nnio.file;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 
 /**
  * Substitute for java.nio.file.Path.
  */
-public interface Path {
+public interface Path extends Comparable<Path>, Iterable<Path> {
+  boolean isAbsolute();
+  Path getParent();
   Path resolve(Path other);
   Path resolve(String other);
+  Path toAbsolutePath();
   File toFile();
+  Path toRealPath(LinkOption... options) throws IOException;
+  URI toUri();
 }

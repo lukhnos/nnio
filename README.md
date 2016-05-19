@@ -1,4 +1,4 @@
-# NNIO: A porting strategy for code that depend on Java NIO.2 API
+# NNIO: A Java NIO.2 Substitute Library
 
 [![Build Status](https://travis-ci.org/lukhnos/nnio.svg?branch=master)](https://travis-ci.org/lukhnos/nnio)
 
@@ -20,10 +20,30 @@ API is backportable, as some of those (such as the file system API) requires
 native implementations. It's currently a non-goal for NNIO to include any
 native code.
 
+## Project Goal
+
+This project aims to backport commonly used NIO.2 classes and methods to allow
+Android apps to include code that depends on NIO.2.
+
+## Non-Goals
+
+Anything that requires native implementation (for example, getting file
+creation time, which java.io.File does not support) is a non-goal for this
+library.
+
+In addition, a sound file system library is hard to implement. This project
+does not aim to address every fine aspect -- the goal is to backport enough
+code to make it practical to use code that depends on NIO.2. It's up to the
+library user (you) to make sure that the operations are safe and correct to
+your need and standard. It's also a non-goal to make the library work on
+Windows file system.
+
+
 ## Classes Supported
 
-* org.lukhnos.nnio.Path
-* org.lukhnos.nnio.Paths
+* org.lukhnos.nnio.file.LinkOption
+* org.lukhnos.nnio.file.Path (partial)
+* org.lukhnos.nnio.file.Paths (partial)
 
 ## Note on Testing
 

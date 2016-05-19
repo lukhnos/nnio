@@ -16,19 +16,9 @@
 
 package org.lukhnos.nnio.file;
 
-import org.lukhnos.nnio.file.impl.FileBasedPathImpl;
-
-import java.net.URI;
-
 /**
- * Substitute for java.nio.file.Paths.
+ * Substitute for java.nio.file.LinkOption.
  */
-public class Paths {
-  public static Path get(String first, String... more) {
-    return FileBasedPathImpl.get(first, more);
-  }
-
-  public static Path get(URI uri) {
-    return FileBasedPathImpl.get(uri);
-  }
+public enum LinkOption {
+  NOFOLLOW_LINKS
 }
