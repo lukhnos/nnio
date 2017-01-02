@@ -66,12 +66,9 @@ classes listed here are stubs.
 * `org.lukhnos.nnio.channels.AsynchronousChannel`
 * `org.lukhnos.nnio.channels.AsynchronousFileChannel`
 * `org.lukhnos.nnio.channels.CompletionHandler`
-* `org.lukhnos.nnio.channels.utils`
-* `org.lukhnos.nnio.channels.utils.FileChannelUtils`
 * `org.lukhnos.nnio.file.AccessDeniedException`
 * `org.lukhnos.nnio.file.AccessMode`
 * `org.lukhnos.nnio.file.AtomicMoveNotSupportedException`
-* `org.lukhnos.nnio.file.attribute`
 * `org.lukhnos.nnio.file.attribute.AttributeView`
 * `org.lukhnos.nnio.file.attribute.BasicFileAttributes`
 * `org.lukhnos.nnio.file.attribute.BasicFileAttributeView`
@@ -99,13 +96,16 @@ classes listed here are stubs.
 * `org.lukhnos.nnio.file.Paths`
 * `org.lukhnos.nnio.file.ProviderMismatchException`
 * `org.lukhnos.nnio.file.SimpleFileVisitor`
-* `org.lukhnos.nnio.file.spi`
 * `org.lukhnos.nnio.file.spi.FileSystemProvider`
 * `org.lukhnos.nnio.file.StandardCopyOption`
 * `org.lukhnos.nnio.file.StandardOpenOption`
 * `org.lukhnos.nnio.file.WatchEvent`
 * `org.lukhnos.nnio.file.WatchKey`
 * `org.lukhnos.nnio.file.WatchService`
+
+A sepearte util class, `org.lukhnos.nnio.channels.utils.FileChannelUtils`, is
+provided to supply the stand-in for `FileChannel.open()`, which is often not
+available in the environments that nnio intends to support.
 
 ## Note on Testing
 
