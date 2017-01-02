@@ -90,8 +90,6 @@ classes listed here are stubs.
 * `org.lukhnos.nnio.file.FileSystems`
 * `org.lukhnos.nnio.file.FileVisitor`
 * `org.lukhnos.nnio.file.FileVisitResult`
-* `org.lukhnos.nnio.file.impl`
-* `org.lukhnos.nnio.file.impl.FileBasedPathImpl`
 * `org.lukhnos.nnio.file.InvalidPathException`
 * `org.lukhnos.nnio.file.LinkOption`
 * `org.lukhnos.nnio.file.NoSuchFileException`
