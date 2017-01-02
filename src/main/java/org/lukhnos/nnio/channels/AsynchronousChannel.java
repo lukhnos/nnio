@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package org.lukhnos.nnio.file;
+package org.lukhnos.nnio.channels;
 
-import org.lukhnos.nnio.file.impl.FileBasedPathImpl;
-
-import java.net.URI;
+import java.nio.channels.Channel;
 
 /**
- * Substitute for {@link java.nio.file.Paths}.
+ * Substitute for {@link java.nio.channels.AsynchronousChannel}.
  */
-public class Paths {
-  public static Path get(String first, String... more) {
-    return FileBasedPathImpl.get(first, more);
-  }
-
-  public static Path get(URI uri) {
-    return FileBasedPathImpl.get(uri);
-  }
+public interface AsynchronousChannel extends Channel {
 }

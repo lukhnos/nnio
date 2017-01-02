@@ -16,19 +16,15 @@
 
 package org.lukhnos.nnio.file;
 
-import org.lukhnos.nnio.file.impl.FileBasedPathImpl;
-
-import java.net.URI;
-
 /**
- * Substitute for {@link java.nio.file.Paths}.
+ * Substitute for {@link java.nio.file.FileAlreadyExistsException}.
  */
-public class Paths {
-  public static Path get(String first, String... more) {
-    return FileBasedPathImpl.get(first, more);
+public class FileAlreadyExistsException extends FileSystemException {
+  public FileAlreadyExistsException(String file) {
+    super(file);
   }
 
-  public static Path get(URI uri) {
-    return FileBasedPathImpl.get(uri);
+  public FileAlreadyExistsException(String file, String other, String msg) {
+    super(file, other, msg);
   }
 }

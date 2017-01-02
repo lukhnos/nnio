@@ -16,19 +16,17 @@
 
 package org.lukhnos.nnio.file;
 
-import org.lukhnos.nnio.file.impl.FileBasedPathImpl;
-
-import java.net.URI;
+import java.util.Locale;
 
 /**
- * Substitute for {@link java.nio.file.Paths}.
+ * Substitute for {@link java.nio.file.AtomicMoveNotSupportedException}.
  */
-public class Paths {
-  public static Path get(String first, String... more) {
-    return FileBasedPathImpl.get(first, more);
-  }
+public class AtomicMoveNotSupportedException extends FileSystemException {
 
-  public static Path get(URI uri) {
-    return FileBasedPathImpl.get(uri);
+  public AtomicMoveNotSupportedException(String source, String target, String reason) {
+    super(
+        String.format(
+            Locale.ROOT,
+            "Atomic move not supported from %s to %s, reason: %s", source, target, reason));
   }
 }

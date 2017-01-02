@@ -14,21 +14,35 @@
  * limitations under the License.
  */
 
-package org.lukhnos.nnio.file;
+package org.lukhnos.nnio;
 
-import org.lukhnos.nnio.file.impl.FileBasedPathImpl;
+import org.junit.After;
+import org.junit.Before;
 
-import java.net.URI;
+import java.io.File;
+import java.io.IOException;
 
-/**
- * Substitute for {@link java.nio.file.Paths}.
- */
-public class Paths {
-  public static Path get(String first, String... more) {
-    return FileBasedPathImpl.get(first, more);
+public abstract class TestBase {
+  protected File tempDir;
+
+  @Before
+  public void setUp() throws IOException {
+    tempDir = File.createTempFile("PathsTest", "temp");
+    tempDir.delete();
+    tempDir.mkdirs();
   }
 
-  public static Path get(URI uri) {
-    return FileBasedPathImpl.get(uri);
+  @After
+  public void tearDown() throws IOException {
+    removeFile(tempDir);
+  }
+
+  protected void removeFile(File f) {
+    if (f.isDirectory()) {
+      for (File child : f.listFiles()) {
+        removeFile(child);
+      }
+    }
+    f.delete();
   }
 }

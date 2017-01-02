@@ -16,19 +16,18 @@
 
 package org.lukhnos.nnio.file;
 
-import org.lukhnos.nnio.file.impl.FileBasedPathImpl;
-
-import java.net.URI;
+import java.io.IOException;
+import java.util.Locale;
 
 /**
- * Substitute for {@link java.nio.file.Paths}.
+ * Substitute for {@link java.nio.file.FileSystemException}.
  */
-public class Paths {
-  public static Path get(String first, String... more) {
-    return FileBasedPathImpl.get(first, more);
+public class FileSystemException extends IOException {
+  public FileSystemException(String file) {
+    super(file);
   }
 
-  public static Path get(URI uri) {
-    return FileBasedPathImpl.get(uri);
+  public FileSystemException(String file, String other, String msg) {
+    super(String.format(Locale.ROOT, "%s: %s %s", msg, file, other));
   }
 }

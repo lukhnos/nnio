@@ -16,19 +16,19 @@
 
 package org.lukhnos.nnio.file;
 
-import org.lukhnos.nnio.file.impl.FileBasedPathImpl;
+import org.lukhnos.nnio.file.attribute.BasicFileAttributes;
 
-import java.net.URI;
+import java.io.IOException;
 
 /**
- * Substitute for {@link java.nio.file.Paths}.
+ * Substitute for {@link java.nio.file.FileVisitor}.
  */
-public class Paths {
-  public static Path get(String first, String... more) {
-    return FileBasedPathImpl.get(first, more);
-  }
+public interface FileVisitor<T> {
+  FileVisitResult postVisitDirectory(T dir, IOException exception) throws IOException;
 
-  public static Path get(URI uri) {
-    return FileBasedPathImpl.get(uri);
-  }
+  FileVisitResult preVisitDirectory(T dir, BasicFileAttributes attrs) throws IOException;
+
+  FileVisitResult visitFile(T file, BasicFileAttributes attrs) throws IOException;
+
+  FileVisitResult visitFileFailed(T file, IOException exception) throws IOException;
 }

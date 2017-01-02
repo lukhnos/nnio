@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Lukhnos Liu. All Rights Reserved.
+ * Copyright 2016-2017 Lukhnos Liu. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package org.lukhnos.nnio.file;
 
 /**
- * Substitute for java.nio.file.LinkOption.
+ * Substitute for {@link java.nio.file.LinkOption}.
  */
 public enum LinkOption {
   NOFOLLOW_LINKS

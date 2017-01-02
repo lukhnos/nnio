@@ -14,21 +14,29 @@
  * limitations under the License.
  */
 
-package org.lukhnos.nnio.file;
+package org.lukhnos.nnio.file.attribute;
 
-import org.lukhnos.nnio.file.impl.FileBasedPathImpl;
-
-import java.net.URI;
+import java.io.File;
 
 /**
- * Substitute for {@link java.nio.file.Paths}.
+ * Substitute for {@link java.nio.file.attribute.BasicFileAttributes}.
  */
-public class Paths {
-  public static Path get(String first, String... more) {
-    return FileBasedPathImpl.get(first, more);
+public class BasicFileAttributes {
+
+  private final File file;
+
+  public BasicFileAttributes(File file) {
+    this.file = file;
   }
 
-  public static Path get(URI uri) {
-    return FileBasedPathImpl.get(uri);
+  public Object fileKey() {
+    return file.getAbsoluteFile().toString();
+  }
+
+  public FileTime lastModifiedTime() {
+    if (file != null) {
+      return new FileTime(file.lastModified());
+    }
+    return new FileTime(0);
   }
 }

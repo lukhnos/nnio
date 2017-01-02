@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Lukhnos Liu. All Rights Reserved.
+ * Copyright 2016-2017 Lukhnos Liu. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,12 @@
 
 package org.lukhnos.nnio.file.impl;
 
+import org.lukhnos.nnio.file.FileSystem;
 import org.lukhnos.nnio.file.LinkOption;
 import org.lukhnos.nnio.file.Path;
+import org.lukhnos.nnio.file.WatchEvent;
+import org.lukhnos.nnio.file.WatchKey;
+import org.lukhnos.nnio.file.WatchService;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +36,11 @@ import java.util.List;
  * A Path implementation with File.
  */
 public class FileBasedPathImpl implements Path {
-  File file;
+  private final File file;
+
+  FileBasedPathImpl(File file) {
+    this.file = file;
+  }
 
   public static Path get(String first, String... more) {
     Path path = new FileBasedPathImpl(new File(first));
@@ -41,6 +49,7 @@ public class FileBasedPathImpl implements Path {
     }
     return path;
   }
+
   public static Path get(URI uri) {
     String scheme = uri.getScheme();
     if (!scheme.equals("file")) {
@@ -50,18 +59,28 @@ public class FileBasedPathImpl implements Path {
     return new FileBasedPathImpl(new File(uri));
   }
 
-  FileBasedPathImpl(File file) {
-    this.file = file;
+  public static Path get(File file) {
+    return new FileBasedPathImpl(file);
   }
 
   @Override
-  public String toString() {
-    return file.toString();
+  protected Object clone() {
+    return new FileBasedPathImpl(file);
   }
 
   @Override
-  public int hashCode() {
-    return file.hashCode();
+  public int compareTo(Path o) {
+    return file.toString().compareTo(o.toFile().toString());
+  }
+
+  @Override
+  public boolean endsWith(Path path) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean endsWith(String path) {
+    throw new UnsupportedOperationException();
   }
 
   /**
@@ -81,13 +100,43 @@ public class FileBasedPathImpl implements Path {
   }
 
   @Override
-  protected Object clone() {
-    return new FileBasedPathImpl(file);
+  public Path getFileName() {
+    return FileBasedPathImpl.get(new File(file.getName()));
   }
 
   @Override
-  public int compareTo(Path o) {
-    return file.toString().compareTo(o.toFile().toString());
+  public FileSystem getFileSystem() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Path getName(int index) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int getNameCount() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Path getParent() {
+    return new FileBasedPathImpl(new File(file.getAbsoluteFile().getParent()));
+  }
+
+  @Override
+  public Path getRoot() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public int hashCode() {
+    return file.hashCode();
+  }
+
+  @Override
+  public boolean isAbsolute() {
+    return file.isAbsolute();
   }
 
   /**
@@ -110,23 +159,75 @@ public class FileBasedPathImpl implements Path {
   }
 
   @Override
-  public boolean isAbsolute() {
-    return file.isAbsolute();
+  public Path normalize() {
+    throw new UnsupportedOperationException();
   }
 
   @Override
-  public Path getParent() {
-    return new FileBasedPathImpl(new File(file.getParent()));
+  public WatchKey register(WatchService service, WatchEvent.Kind<?>[] kinds, WatchEvent.Modifier... modifiers) throws IOException {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public WatchKey register(WatchService service, WatchEvent.Kind<?>... kinds) throws IOException {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Path relativize(Path path) {
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Path resolve(Path other) {
+    if (other.toString().isEmpty()) {
+      return this;
+    }
+
+    if (other.isAbsolute()) {
+      return other;
+    }
+
     return new FileBasedPathImpl(new File(file, other.toFile().toString()));
   }
 
   @Override
   public Path resolve(String other) {
+    if (other.isEmpty()) {
+      return this;
+    }
+
+    File otherFile = new File(other);
+    if (otherFile.isAbsolute()) {
+      return new FileBasedPathImpl(otherFile);
+    }
+
     return new FileBasedPathImpl(new File(file, other));
+  }
+
+  @Override
+  public Path resolveSibling(Path path) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Path resolveSibling(String path) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean startsWith(Path path) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public boolean startsWith(String path) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Path subpath(int beginIndex, int endIndex) {
+    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -141,14 +242,23 @@ public class FileBasedPathImpl implements Path {
 
   @Override
   public Path toRealPath(LinkOption... options) throws IOException {
-    File f = Arrays.asList(options).contains(LinkOption.NOFOLLOW_LINKS) ?
-        file.getAbsoluteFile() : file.getCanonicalFile();
+    File f;
+    if (Arrays.asList(options).contains(LinkOption.NOFOLLOW_LINKS)) {
+      f = file.getAbsoluteFile();
+    } else {
+      f = file.getCanonicalFile();
+    }
 
     if (!f.exists()) {
-      throw new NoSuchFileException("No real path because file does not exist: " + this);
+      throw new NoSuchFileException("Not found: " + this);
     }
 
     return new FileBasedPathImpl(f);
+  }
+
+  @Override
+  public String toString() {
+    return file.toString();
   }
 
   @Override

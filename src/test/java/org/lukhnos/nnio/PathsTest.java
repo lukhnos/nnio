@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Lukhnos Liu. All Rights Reserved.
+ * Copyright 2016-2017 Lukhnos Liu. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,6 @@
 
 package org.lukhnos.nnio;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -35,32 +28,15 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
  * Basic tests for Path and Paths.
  */
-public class PathsTest {
-  File tempDir;
-
-  @Before
-  public void setUp() throws IOException {
-    tempDir = File.createTempFile("PathsTest", "temp");
-    tempDir.delete();
-    tempDir.mkdirs();
-  }
-
-  void removeFile(File f) {
-    if (f.isDirectory()) {
-      for (File child : f.listFiles()) {
-        removeFile(child);
-      }
-    }
-    f.delete();
-  }
-
-  @After
-  public void tearDown() throws IOException {
-    removeFile(tempDir);
-  }
+public class PathsTest extends TestBase {
 
   @Test
   public void testBasics() {
@@ -91,6 +67,20 @@ public class PathsTest {
     assertEquals(p1.toRealPath(options1), p3.toRealPath(options1));
     assertEquals(p1.toRealPath(options2), p3.toRealPath(options2));
     assertEquals(p1, p2.getParent());
+  }
+
+  @Test
+  public void testTrivialResolve() throws IOException {
+    Path p = Paths.get(tempDir.getAbsolutePath());
+    Path p1 = p.resolve("");
+    Path p2 = p.resolve("foo");
+    Path p3 = p.resolve(p2.toString());
+    Path p4 = p.resolve(Paths.get(""));
+    Path p5 = p.resolve(p2);
+    assertEquals(p, p1);
+    assertEquals(p2, p3);
+    assertEquals(p, p4);
+    assertEquals(p2, p5);
   }
 
   @Test

@@ -16,19 +16,15 @@
 
 package org.lukhnos.nnio.file;
 
-import org.lukhnos.nnio.file.impl.FileBasedPathImpl;
-
-import java.net.URI;
-
 /**
- * Substitute for {@link java.nio.file.Paths}.
+ * Substitute for {@link java.nio.file.NoSuchFileException}.
  */
-public class Paths {
-  public static Path get(String first, String... more) {
-    return FileBasedPathImpl.get(first, more);
+public class NoSuchFileException extends FileSystemException {
+  public NoSuchFileException(String file, String other, String msg) {
+    super(file, other, msg);
   }
 
-  public static Path get(URI uri) {
-    return FileBasedPathImpl.get(uri);
+  public NoSuchFileException(String file) {
+    super(file);
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Lukhnos Liu. All Rights Reserved.
+ * Copyright 2016-2017 Lukhnos Liu. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,61 @@ package org.lukhnos.nnio.file;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Iterator;
 
 /**
- * Substitute for java.nio.file.Path.
+ * Substitute for {@link java.nio.file.Path}.
  */
 public interface Path extends Comparable<Path>, Iterable<Path> {
-  boolean isAbsolute();
+  boolean endsWith(Path path);
+
+  boolean endsWith(String path);
+
+  public Path getFileName();
+
+  FileSystem getFileSystem();
+
+  Path getName(int index);
+
+  int getNameCount();
+
   Path getParent();
+
+  Path getRoot();
+
+  boolean isAbsolute();
+
+  Iterator<Path> iterator();
+
+  Path normalize();
+
+  WatchKey register(WatchService service, WatchEvent.Kind<?>[] kinds, WatchEvent.Modifier... modifiers) throws
+      IOException;
+
+  WatchKey register(WatchService service, WatchEvent.Kind<?>... kinds) throws IOException;
+
+  Path relativize(Path path);
+
   Path resolve(Path other);
+
   Path resolve(String other);
+
+  Path resolveSibling(Path path);
+
+  Path resolveSibling(String path);
+
+  boolean startsWith(Path path);
+
+  boolean startsWith(String path);
+
+  Path subpath(int beginIndex, int endIndex);
+
   Path toAbsolutePath();
+
   File toFile();
+
   Path toRealPath(LinkOption... options) throws IOException;
+
   URI toUri();
+
 }
