@@ -20,6 +20,25 @@ API is backportable, as some of those (such as the file system API) requires
 native implementations. It's currently a non-goal for NNIO to include any
 native code.
 
+## Quick Start
+
+Have your project depend on nnio. Suppose you use Gradle:
+
+```groovy
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'org.lukhnos:nnio:0.2'
+}
+```
+
+Then replace your `java.nio.file` and `java.nio.channels` imports with
+`org.lukhnos.nnio.file` and `org.lukhnos.nnio.channels` respectively. If you
+run into errors such as missing classes or methods, this means the items in
+question are not backported to nnio. :)
+
 ## Project Goal
 
 This project aims to backport commonly used NIO.2 classes and methods to allow
