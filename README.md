@@ -41,14 +41,60 @@ Windows file system.
 
 ## Classes Supported
 
-* org.lukhnos.nnio.file.LinkOption
-* org.lukhnos.nnio.file.Path (partial)
-* org.lukhnos.nnio.file.Paths (partial)
+Please note that while `Files` and `Path` have a larger coverage, a lot of the
+classes listed here are stubs.
+
+* `org.lukhnos.nnio.channels.AsynchronousChannel`
+* `org.lukhnos.nnio.channels.AsynchronousFileChannel`
+* `org.lukhnos.nnio.channels.CompletionHandler`
+* `org.lukhnos.nnio.channels.utils`
+* `org.lukhnos.nnio.channels.utils.FileChannelUtils`
+* `org.lukhnos.nnio.file.AccessDeniedException`
+* `org.lukhnos.nnio.file.AccessMode`
+* `org.lukhnos.nnio.file.AtomicMoveNotSupportedException`
+* `org.lukhnos.nnio.file.attribute`
+* `org.lukhnos.nnio.file.attribute.AttributeView`
+* `org.lukhnos.nnio.file.attribute.BasicFileAttributes`
+* `org.lukhnos.nnio.file.attribute.BasicFileAttributeView`
+* `org.lukhnos.nnio.file.attribute.FileAttribute`
+* `org.lukhnos.nnio.file.attribute.FileAttributeView`
+* `org.lukhnos.nnio.file.attribute.FileStoreAttributeView`
+* `org.lukhnos.nnio.file.attribute.FileTime`
+* `org.lukhnos.nnio.file.attribute.UserPrincipalLookupService`
+* `org.lukhnos.nnio.file.CopyOption`
+* `org.lukhnos.nnio.file.DirectoryStream`
+* `org.lukhnos.nnio.file.FileAlreadyExistsException`
+* `org.lukhnos.nnio.file.Files`
+* `org.lukhnos.nnio.file.FileStore`
+* `org.lukhnos.nnio.file.FileSystem`
+* `org.lukhnos.nnio.file.FileSystemException`
+* `org.lukhnos.nnio.file.FileSystems`
+* `org.lukhnos.nnio.file.FileVisitor`
+* `org.lukhnos.nnio.file.FileVisitResult`
+* `org.lukhnos.nnio.file.impl`
+* `org.lukhnos.nnio.file.impl.FileBasedPathImpl`
+* `org.lukhnos.nnio.file.InvalidPathException`
+* `org.lukhnos.nnio.file.LinkOption`
+* `org.lukhnos.nnio.file.NoSuchFileException`
+* `org.lukhnos.nnio.file.OpenOption`
+* `org.lukhnos.nnio.file.Path`
+* `org.lukhnos.nnio.file.PathMatcher`
+* `org.lukhnos.nnio.file.Paths`
+* `org.lukhnos.nnio.file.ProviderMismatchException`
+* `org.lukhnos.nnio.file.SimpleFileVisitor`
+* `org.lukhnos.nnio.file.spi`
+* `org.lukhnos.nnio.file.spi.FileSystemProvider`
+* `org.lukhnos.nnio.file.StandardCopyOption`
+* `org.lukhnos.nnio.file.StandardOpenOption`
+* `org.lukhnos.nnio.file.WatchEvent`
+* `org.lukhnos.nnio.file.WatchKey`
+* `org.lukhnos.nnio.file.WatchService`
 
 ## Note on Testing
 
 The tests use NIO.2, but during the compile time, a Gradle task generates a
 version of the tests that have all `java.nio.file` imports substituted to
-`org.lukhnos.nnio.file`, and each test file has a corresponding `Generated`-
-prefixed test. Both versions are built and tested together.
+`org.lukhnos.nnio.file` (and similarly for `java.nio.channels`), and each test
+file has a corresponding `Generated`- prefixed test. Both versions are built
+and tested together.
 
