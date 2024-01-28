@@ -238,8 +238,6 @@ public class Files {
 
   /**
    * The only option supported is REPLACE_EXISTING. ATOMIC_MOVE is ignored.
-   *
-   * {@inheritDoc}
    */
   public static Path move(Path source, Path target, CopyOption... options) throws IOException {
     if (Files.exists(target)) {

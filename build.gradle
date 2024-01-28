@@ -39,6 +39,9 @@ compileTestJava {
 java {
     withJavadocJar()
     withSourcesJar()
+    // try-with-resources are used, hence 1.7.
+    sourceCompatibility = "1.7"
+    targetCompatibility = "1.7"
 }
 
 /*
