@@ -338,13 +338,13 @@ public class Files {
 
   public static Path walkFileTree(Path start, FileVisitor<? super Path> visitor) throws IOException {
     File file = start.toFile();
-    if(!file.canRead()){
+    if (!file.canRead()) {
       return start;
     }
     if (Files.isDirectory(start)) {
       visitor.preVisitDirectory(start, null);
       File[] children = start.toFile().listFiles();
-      if(children != null){
+      if (children != null) {
         for (File child : children) {
           walkFileTree(FileBasedPathImpl.get(child), visitor);
         }
