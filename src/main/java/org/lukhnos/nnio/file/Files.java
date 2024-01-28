@@ -335,14 +335,22 @@ public class Files {
   }
 
   public static Path walkFileTree(Path start, FileVisitor<? super Path> visitor) throws IOException {
+    File file = start.toFile();
+    if (!file.canRead()) {
+      visitor.visitFileFailed(start, new AccessDeniedException(file.toString()));
+      return start;
+    }
     if (Files.isDirectory(start)) {
       visitor.preVisitDirectory(start, null);
-      for (File child : start.toFile().listFiles()) {
-        walkFileTree(FileBasedPathImpl.get(child), visitor);
+      File[] children = start.toFile().listFiles();
+      if (children != null) {
+        for (File child : children) {
+          walkFileTree(FileBasedPathImpl.get(child), visitor);
+        }
+        visitor.postVisitDirectory(start, null);
       }
-      visitor.postVisitDirectory(start, null);
     } else {
-      visitor.visitFile(start, new BasicFileAttributes(start.toFile()));
+      visitor.visitFile(start, new BasicFileAttributes(file));
     }
     return start;
   }
