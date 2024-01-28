@@ -1,5 +1,5 @@
-apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'java-library'
+// apply plugin: 'maven'
 apply plugin: 'signing'
 
 ext.isReleaseVersion = !version.endsWith('-SNAPSHOT')
@@ -9,22 +9,22 @@ repositories {
 }
 
 dependencies {
-  testCompile 'junit:junit:4.11'
+  testImplementation 'junit:junit:4.11'
 }
 
 task filter(type: Copy) {
   from sourceSets.test.java
   exclude('**/*Base.java')
   into "$buildDir/generated-src/test/java"
-  
+
   rename '(.+)Test.java', 'Generated$1Test.java'
-  
+
   filter { String line ->
     line.replaceAll(/^import java\.nio\.(file)\.(.+);/) { fullMatch, nioPkg, subPkgs ->
       return "import org.lukhnos.nnio.$nioPkg.$subPkgs;"
     }
   }
-  
+
   filter { String line ->
     line.replaceAll(/public class (\w+Test) (.+?)\{/) { fullMatch, cls, rest ->
       return "public class Generated$cls $rest{"
@@ -36,6 +36,12 @@ compileTestJava {
   source filter.outputs.files, sourceSets.test.java
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+/*
 // http://central.sonatype.org/pages/gradle.html
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -146,3 +152,4 @@ gradle.taskGraph.whenReady { taskGraph ->
     console.printf '\nThanks.\n\n'
   }
 }
+*/
