@@ -339,6 +339,7 @@ public class Files {
   public static Path walkFileTree(Path start, FileVisitor<? super Path> visitor) throws IOException {
     File file = start.toFile();
     if (!file.canRead()) {
+      visitor.visitFileFailed(start, new AccessDeniedException(file.toString()));
       return start;
     }
     if (Files.isDirectory(start)) {
