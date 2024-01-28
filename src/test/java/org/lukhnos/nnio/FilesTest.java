@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
 import java.nio.charset.Charset;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -62,6 +63,8 @@ public class FilesTest extends TestBase {
 
     assertArrayEquals(data, getFileContent(test1));
     assertArrayEquals(data, getFileContent(test2));
+    Files.delete(test1);
+    Files.delete(test2);
   }
 
   @Test
@@ -102,7 +105,7 @@ public class FilesTest extends TestBase {
     try {
       Files.createFile(test2);
       fail();
-    } catch (FileAlreadyExistsException ignored) {
+    } catch (FileAlreadyExistsException | AccessDeniedException ignored) {
       // Expected.
     }
   }
@@ -229,6 +232,7 @@ public class FilesTest extends TestBase {
     Files.delete(test3);
     Files.move(test2, test3);
     assertArrayEquals(data, getFileContent(test3));
+    Files.delete(test3);
   }
 
   @Test
@@ -400,6 +404,7 @@ public class FilesTest extends TestBase {
     while ((c = fis.read()) != -1) {
       baos.write(c);
     }
+    fis.close();
     return baos.toByteArray();
   }
 }
