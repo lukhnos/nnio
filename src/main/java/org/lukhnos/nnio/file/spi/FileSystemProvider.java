@@ -40,7 +40,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Substitute for {@link java.nio.file.spi.FileSystemProvider}.
+ * Substitute for java.nio.file.spi.FileSystemProvider.
  */
 public abstract class FileSystemProvider {
   public abstract void checkAccess(Path var1, AccessMode... var2) throws IOException;
