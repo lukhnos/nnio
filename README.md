@@ -1,12 +1,10 @@
 # NNIO: A Java NIO.2 Substitute Library
 
-[![Build Status](https://travis-ci.org/lukhnos/nnio.svg?branch=master)](https://travis-ci.org/lukhnos/nnio)
-
 NNIO ("Not NIO") is an experimental porting strategy for code that depends on
 Java NIO.2 API (for example, classes in the `java.nio.file` package). It
 provides a replacement subset of NIO.2 under a different package name. The
 subset is implemented with the pre-NIO.2 file API, and as a result should be
-usable to code using a language level lower than Java 7 or built for Android.
+usable to code using a language level lower than Java 8 or built for Android.
 
 To use NNIO, you have to substitute NIO.2 package names with NNIO ones. For
 example, `java.nio.file.Path` becomes `org.lukhnos.nnio.file.Path`.
@@ -30,7 +28,7 @@ repositories {
 }
 
 dependencies {
-  compile 'org.lukhnos:nnio:0.2'
+  implementation 'org.lukhnos:nnio:0.3'
 }
 ```
 
@@ -103,7 +101,7 @@ classes listed here are stubs.
 * `org.lukhnos.nnio.file.WatchKey`
 * `org.lukhnos.nnio.file.WatchService`
 
-A sepearte util class, `org.lukhnos.nnio.channels.utils.FileChannelUtils`, is
+A separate util class, `org.lukhnos.nnio.channels.utils.FileChannelUtils`, is
 provided to supply the stand-in for `FileChannel.open()`, which is often not
 available in the environments that nnio intends to support.
 
@@ -114,4 +112,3 @@ version of the tests that have all `java.nio.file` imports substituted to
 `org.lukhnos.nnio.file` (and similarly for `java.nio.channels`), and each test
 file has a corresponding `Generated`- prefixed test. Both versions are built
 and tested together.
-
