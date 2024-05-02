@@ -20,5 +20,8 @@ package org.lukhnos.nnio.file;
  * Substitute for {@link java.nio.file.FileVisitResult}.
  */
 public enum FileVisitResult {
-  CONTINUE
+  CONTINUE,
+  SKIP_SIBLINGS,
+  SKIP_SUBTREE,
+  TERMINATE,
 }
