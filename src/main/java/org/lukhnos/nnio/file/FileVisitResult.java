@@ -21,7 +21,5 @@ package org.lukhnos.nnio.file;
  */
 public enum FileVisitResult {
   CONTINUE,
-  SKIP_SIBLINGS,
   SKIP_SUBTREE,
-  TERMINATE,
 }

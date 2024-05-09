@@ -342,6 +342,7 @@ public class Files {
     }
     if (Files.isDirectory(start)) {
       FileVisitResult preVisitDirectoryResult = visitor.preVisitDirectory(start, null);
+      //currently only CONTINUE and SKIP_SUBTREE is implemented, SKIP_SUBTREE is implicitly implemented here
       if (preVisitDirectoryResult == FileVisitResult.CONTINUE) {
         File[] children = start.toFile().listFiles();
         if (children != null) {
