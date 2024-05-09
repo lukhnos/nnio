@@ -341,13 +341,15 @@ public class Files {
       return start;
     }
     if (Files.isDirectory(start)) {
-      visitor.preVisitDirectory(start, null);
-      File[] children = start.toFile().listFiles();
-      if (children != null) {
-        for (File child : children) {
-          walkFileTree(FileBasedPathImpl.get(child), visitor);
+      FileVisitResult preVisitDirectoryResult = visitor.preVisitDirectory(start, null);
+      if (preVisitDirectoryResult == FileVisitResult.CONTINUE) {
+        File[] children = start.toFile().listFiles();
+        if (children != null) {
+          for (File child : children) {
+            walkFileTree(FileBasedPathImpl.get(child), visitor);
+          }
+          visitor.postVisitDirectory(start, null);
         }
-        visitor.postVisitDirectory(start, null);
       }
     } else {
       visitor.visitFile(start, new BasicFileAttributes(file));
