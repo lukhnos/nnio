@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'org.lukhnos:nnio:0.3'
+  implementation 'org.lukhnos:nnio:0.3.1'
 }
 ```
 
